@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "moduleResolution": "node",
+    "baseUrl": "./src"
+  },
+  "include": ["."],
+  "exclude": ["dist", "node_modules"]
+}
