@@ -2,7 +2,7 @@ import { RequireId } from "core";
 import { MakeUpsertData, PaginationQueryParameters } from "laravel";
 import { PaginatedApiResponse, ApiResponse } from "./response";
 
-export type IndexEndpoint<
+export type IndexRoute<
   Path extends string,
   ResponseData extends { id: any } | null
 > = {
@@ -16,7 +16,7 @@ export type IndexEndpoint<
   };
 };
 
-export type StoreEndpoint<
+export type StoreRoute<
   Path extends string,
   ResponseData extends { id: any } | null,
   Payload = ResponseData extends {} ? MakeUpsertData<ResponseData> : null
@@ -31,7 +31,7 @@ export type StoreEndpoint<
   };
 };
 
-export type ShowEndpoint<
+export type ShowRoute<
   Path extends string,
   ResponseData extends { id: any } | null
 > = {
@@ -44,7 +44,7 @@ export type ShowEndpoint<
   };
 };
 
-export type UpdateEndpoint<
+export type UpdateRoute<
   Path extends string,
   ResponseData extends { id: any } | null,
   Payload = ResponseData extends {} ? MakeUpsertData<ResponseData> : null
@@ -59,7 +59,7 @@ export type UpdateEndpoint<
   };
 };
 
-export type DeleteEndpoint<
+export type DeleteRoute<
   Path extends string,
   ResponseData extends { id: any } | null
 > = {
@@ -73,7 +73,7 @@ export type DeleteEndpoint<
 };
 
 /**
- * Given a base path of `posts` will generate the following endpoints:
+ * Given a base path of `posts` will generate the following routes:
  * - GET `posts`
  * - POST `posts`
  * - GET `posts/${number}`
@@ -85,10 +85,10 @@ export type ApiResource<
   ResponseData extends { id: any },
   ResourcePath extends `${BasePath}/${number}` = `${BasePath}/${number}`,
   UpsertData = MakeUpsertData<ResponseData>
-> = IndexEndpoint<BasePath, ResponseData> &
-  StoreEndpoint<BasePath, ResponseData, UpsertData> &
-  ShowEndpoint<ResourcePath, ResponseData> &
-  UpdateEndpoint<ResourcePath, ResponseData, UpsertData> &
-  DeleteEndpoint<ResourcePath, ResponseData>;
+> = IndexRoute<BasePath, ResponseData> &
+  StoreRoute<BasePath, ResponseData, UpsertData> &
+  ShowRoute<ResourcePath, ResponseData> &
+  UpdateRoute<ResourcePath, ResponseData, UpsertData> &
+  DeleteRoute<ResourcePath, ResponseData>;
 
 export { MakeUpsertData, PaginationQueryParameters };

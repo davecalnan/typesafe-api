@@ -1,4 +1,4 @@
-import { EndpointsMap } from "@davekit/typesafe-api";
+import { RoutesMap } from "@davekit/typesafe-api";
 import { ApiMethod } from "types";
 
 const encodeSearchParams = (
@@ -34,7 +34,7 @@ const addQueryString = (
   return path;
 };
 
-export const createApiClient = <Endpoints extends EndpointsMap>({
+export const createApiClient = <Routes extends RoutesMap>({
   baseUrl,
 }: {
   baseUrl: string | URL;
@@ -45,31 +45,28 @@ export const createApiClient = <Endpoints extends EndpointsMap>({
   });
 
   const call = async <
-    Endpoint extends keyof Endpoints,
-    Method extends keyof Endpoints[Endpoint],
-    Body extends Endpoints[Endpoint][Method] extends {
+    Path extends keyof Routes,
+    Method extends keyof Routes[Path],
+    Body extends Routes[Path][Method] extends {
       body: infer BodyType;
     }
       ? BodyType
       : null,
-    ResponseData = Endpoints[Endpoint][Method] extends {
+    ResponseData = Routes[Path][Method] extends {
       response: infer ResponseType;
     }
       ? ResponseType
       : never
   >(
-    endpoint: Endpoint,
+    path: Path,
     method: Method,
     body: Body
   ): Promise<ResponseData & { response: Response }> => {
-    const response = await fetch(
-      new URL(endpoint as string | URL, baseUrl).href,
-      {
-        method: method as ApiMethod,
-        body: body ? JSON.stringify(body) : null,
-        headers,
-      }
-    );
+    const response = await fetch(new URL(path as string | URL, baseUrl).href, {
+      method: method as ApiMethod,
+      body: body ? JSON.stringify(body) : null,
+      headers,
+    });
 
     return {
       ...(await response.json()),
@@ -78,8 +75,8 @@ export const createApiClient = <Endpoints extends EndpointsMap>({
   };
 
   const get = async <
-    Endpoint extends keyof Endpoints,
-    Query extends Endpoints[Endpoint] extends {
+    Path extends keyof Routes,
+    Query extends Routes[Path] extends {
       GET: {
         query: infer QueryType;
       };
@@ -87,22 +84,22 @@ export const createApiClient = <Endpoints extends EndpointsMap>({
       ? QueryType
       : undefined
   >(
-    endpoint: Endpoint,
+    path: Path,
     searchParams?: Query
   ) => {
     return call(
       addQueryString(
-        endpoint as string,
+        path as string,
         searchParams as Record<string, string> | undefined
-      ) as Endpoint,
+      ) as Path,
       "GET",
       null
     );
   };
 
   const post = async <
-    Endpoint extends keyof Endpoints,
-    Body extends Endpoints[Endpoint] extends {
+    Path extends keyof Routes,
+    Body extends Routes[Path] extends {
       POST: {
         body: infer BodyType;
       };
@@ -110,11 +107,11 @@ export const createApiClient = <Endpoints extends EndpointsMap>({
       ? BodyType
       : never
   >(
-    endpoint: Endpoint,
+    path: Path,
     body: Body
   ) => {
     return call(
-      endpoint,
+      path,
       "POST",
       /* @ts-expect-error */
       body
@@ -122,8 +119,8 @@ export const createApiClient = <Endpoints extends EndpointsMap>({
   };
 
   const put = async <
-    Endpoint extends keyof Endpoints,
-    Body extends Endpoints[Endpoint] extends {
+    Path extends keyof Routes,
+    Body extends Routes[Path] extends {
       PUT: {
         body: infer BodyType;
       };
@@ -131,11 +128,11 @@ export const createApiClient = <Endpoints extends EndpointsMap>({
       ? BodyType
       : never
   >(
-    endpoint: Endpoint,
+    path: Path,
     body: Body
   ) => {
     return call(
-      endpoint,
+      path,
       "PUT",
       /* @ts-expect-error */
       body
@@ -143,8 +140,8 @@ export const createApiClient = <Endpoints extends EndpointsMap>({
   };
 
   const patch = async <
-    Endpoint extends keyof Endpoints,
-    Body extends Endpoints[Endpoint] extends {
+    Path extends keyof Routes,
+    Body extends Routes[Path] extends {
       PATCH: {
         body: infer BodyType;
       };
@@ -152,21 +149,19 @@ export const createApiClient = <Endpoints extends EndpointsMap>({
       ? BodyType
       : never
   >(
-    endpoint: Endpoint,
+    path: Path,
     body: Body
   ) => {
     return call(
-      endpoint,
+      path,
       "PATCH",
       /* @ts-expect-error */
       body
     );
   };
 
-  const deleteCall = async <Endpoint extends keyof Endpoints>(
-    endpoint: Endpoint
-  ) => {
-    return call(endpoint, "DELETE", null);
+  const deleteCall = async <Path extends keyof Routes>(path: Path) => {
+    return call(path, "DELETE", null);
   };
 
   return {
