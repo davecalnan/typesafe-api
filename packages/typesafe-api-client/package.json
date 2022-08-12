@@ -2,6 +2,7 @@
   "name": "@davekit/typesafe-api-client",
   "version": "0.1.0",
   "sideEffects": false,
+  "repository": "https://github.com/davecalnan/typesafe-api",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
