@@ -6,8 +6,9 @@ export type MakeUpsertData<Data extends { id: any }> = Omit<
 >;
 
 export type PaginationQueryParameters<Data = Record<string, string>> = {} & {
-  sort_by: keyof Data;
-  sort_direction: "asc" | "desc";
+  per_page?: number;
+  sort_by?: keyof Data;
+  sort_direction?: "asc" | "desc";
 };
 
 export type IndexRoute<
