@@ -40,6 +40,7 @@ const api = createApiClient<ApiRoutes>({
   baseUrl: process.env.API_ENDPOINT,
 });
 
+// ✅ Infer you can GET /posts and infer the response type
 api
   .get(
     "posts", /* 1️⃣ */
@@ -53,6 +54,7 @@ api
 // 2. Knows that a `?sort=oldest-first` is a valid query string
 // 3. Knows that the return type is `Post[]`
 
+// ✅ Infer you can POST /posts and infer the body type and response type
 api
   .post(
     "posts", /* 1️⃣ */
