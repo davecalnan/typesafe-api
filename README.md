@@ -19,7 +19,7 @@ export type ApiRoutes = RoutesMap<{
   posts: {
     GET: {
       response: Post[];
-      query?: { sort: 'oldest-first' | 'newest-first' }
+      query?: { sort: "oldest-first" | "newest-first" };
     };
     POST: {
       body: Omit<Post, "id">;
@@ -40,31 +40,43 @@ const api = createApiClient<ApiRoutes>({
   baseUrl: process.env.API_ENDPOINT,
 });
 
-api.get(/* 1️⃣ */ "posts", /* 2️⃣ */ { sort: "oldest-first"  })
-    .then(/* 3️⃣ */ (post) => {});
+api
+  .get(
+    "posts", /* 1️⃣ */
+    { sort: "oldest-first" } /* 2️⃣ */
+  )
+  .then((post) => {
+    /* 3️⃣ */
+  });
 
 // 1. Knows that GET /posts is a valid endpoint
 // 2. Knows that a `?sort=oldest-first` is a valid query string
 // 3. Knows that the return type is `Post[]`
 
-api.post(/* 1️⃣ */ "posts", /* 2️⃣ */ { content: "Hello world" })
-    .then(/* 3️⃣ */ (post) => {});
+api
+  .post(
+    "posts", /* 1️⃣ */
+    { content: "Hello world" } /* 2️⃣ */
+  )
+  .then((post) => {
+    /* 3️⃣ */
+  });
 
 // 1. Knows that POST /posts is a valid endpoint
 // 2. Knows that the body must be `Omit<Post, "id">`
 // 3. Knows that the return type is `Post`
 
 // ❌ Type error as GET /psots is not a valid endpoint
-api.get("psots");
+const badPath = await api.get("psots");
 
 // ❌ Type error as DELETE /posts is not a valid endpoint
-api.delete("posts");
+const badMethod = await api.delete("posts");
 
 // ❌ Type error as payload does not match type `Omit<Post,"id">;`
-api.post("posts", { text: "Hello World" });
+const badBody = await api.post("posts", { text: "Hello World" });
 
 // ❌ Type error as `?order=oldest-first is not a valid query string
-api.get("posts", { order: "oldest-first" });
+const badQuery = await api.get("posts", { order: "oldest-first" });
 ```
 
 ## The Problem
