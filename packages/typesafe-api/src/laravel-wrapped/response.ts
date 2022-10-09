@@ -29,10 +29,9 @@ export type ApiResponse<Data = any> =
   | SuccessfulApiResponse<Data>
   | ErrorApiResponse;
 
-export interface SuccessfulPaginatedApiResponse<Item = any>
-  extends BaseApiResponse {
-  data: Item[];
-  meta: {
+export type SuccessfulPaginatedApiResponse<Item = any> = SuccessfulApiResponse<
+  Item[],
+  {
     pagination: {
       current_page: number;
       first_page_url: string;
@@ -46,8 +45,8 @@ export interface SuccessfulPaginatedApiResponse<Item = any>
       to: number;
       total: number;
     };
-  };
-}
+  }
+>;
 
 export type PaginatedApiResponse<Item = any> =
   | SuccessfulPaginatedApiResponse<Item>
