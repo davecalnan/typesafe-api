@@ -1,6 +1,6 @@
 {
   "name": "@davekit/typesafe-api",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "sideEffects": false,
   "repository": "https://github.com/davecalnan/typesafe-api",
   "main": "./dist/index.js",
