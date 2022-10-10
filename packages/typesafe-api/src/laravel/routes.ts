@@ -6,6 +6,10 @@ export type MakeUpsertData<Data extends { id: any }> = Omit<
 >;
 
 export type PaginationQueryParameters<Data = Record<string, string>> = {} & {
+  /**
+   * Allow string for easier use with query parameters.
+   */
+  page?: number | string;
   per_page?: number;
   sort_by?: keyof Data;
   sort_direction?: "asc" | "desc";
