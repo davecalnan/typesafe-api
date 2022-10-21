@@ -24,7 +24,8 @@
   },
   "scripts": {
     "build": "tsup src/index.ts src/laravel/index.ts src/laravel-wrapped/index.ts --format esm,cjs --dts",
-    "dev": "yarn build --watch"
+    "dev": "yarn build --watch",
+    "prepublish": "yarn build"
   },
   "dependencies": {},
   "devDependencies": {
