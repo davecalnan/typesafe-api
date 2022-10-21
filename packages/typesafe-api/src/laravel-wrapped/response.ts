@@ -25,8 +25,8 @@ export interface ErrorApiResponse<
   meta: Meta;
 }
 
-export type ApiResponse<Data = any> =
-  | SuccessfulApiResponse<Data>
+export type ApiResponse<Data = any, Meta = {}> =
+  | SuccessfulApiResponse<Data, Meta>
   | ErrorApiResponse;
 
 export type SuccessfulPaginatedApiResponse<Item = any> = SuccessfulApiResponse<
