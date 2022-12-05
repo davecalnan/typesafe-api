@@ -43,11 +43,11 @@ export const createApiClient = <Routes extends RoutesMap>({
   /**
    * Called before the request is sent.
    */
-  onRequest: (args: { request: Request }) => void | Promise<void>;
+  onRequest?: (args: { request: Request }) => void | Promise<void>;
   /**
    * Called after the response is received.
    */
-  onResponse: (args: {
+  onResponse?: (args: {
     response: any & { response: Response };
   }) => void | Promise<void>;
 }) => {
