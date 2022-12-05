@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@davekit/typesafe-api@0.1.3":
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/@davekit/typesafe-api/-/typesafe-api-0.1.3.tgz#f648fcb2b6f00c41ac6194a92c4cd356d0842fcd"
+  integrity sha512-KQmXx7GNDfd96lwyDM+Bnd6Q5isPiACk/960nnF/Uk22d7gnAbmsgdXskVzpD4c5NjYtXPDwUnvzxoiXoIFiug==
+
 "@esbuild/linux-loong64@0.15.1":
   version "0.15.1"
   resolved "https://registry.yarnpkg.com/@esbuild/linux-loong64/-/linux-loong64-0.15.1.tgz#f293d9442201fa7448248f05590139bb8e521856"

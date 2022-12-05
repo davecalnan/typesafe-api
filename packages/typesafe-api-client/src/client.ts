@@ -36,8 +36,20 @@ const addQueryString = (
 
 export const createApiClient = <Routes extends RoutesMap>({
   baseUrl,
+  onRequest,
+  onResponse,
 }: {
   baseUrl: string | URL;
+  /**
+   * Called before the request is sent.
+   */
+  onRequest: (args: { request: Request }) => void | Promise<void>;
+  /**
+   * Called after the response is received.
+   */
+  onResponse: (args: {
+    response: any & { response: Response };
+  }) => void | Promise<void>;
 }) => {
   const headers = new Headers({
     Accept: "application/json",
@@ -62,16 +74,24 @@ export const createApiClient = <Routes extends RoutesMap>({
     method: Method,
     body: Body
   ): Promise<ResponseData & { response: Response }> => {
-    const response = await fetch(new URL(path as string | URL, baseUrl).href, {
+    const request = new Request(new URL(path as string | URL, baseUrl).href, {
       method: method as ApiMethod,
       body: body ? JSON.stringify(body) : null,
       headers,
     });
 
-    return {
-      ...(await response.json()),
-      response,
+    await onRequest?.({ request });
+
+    const apiResponse = await fetch(request);
+
+    const response = {
+      ...(await apiResponse.json()),
+      response: apiResponse,
     };
+
+    await onResponse?.({ response });
+
+    return response;
   };
 
   const get = async <
