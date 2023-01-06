@@ -10,5 +10,5 @@ export type RoutesMap<
 export type Route = {
   query?: {};
   body?: {};
-  response: {};
+  response: {} | null;
 };
