@@ -48,6 +48,7 @@ export const createApiClient = <Routes extends RoutesMap>({
    * Called after the response is received.
    */
   onResponse?: (args: {
+    request: Request;
     response: any & { response: Response };
   }) => void | Promise<void>;
 }) => {
@@ -89,7 +90,7 @@ export const createApiClient = <Routes extends RoutesMap>({
       response: apiResponse,
     };
 
-    await onResponse?.({ response });
+    await onResponse?.({ request, response });
 
     return response;
   };
